@@ -8,6 +8,8 @@ on:
 jobs:
   sync-release:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     
     steps:
       - name: 检出仓库
@@ -155,7 +157,7 @@ jobs:
             echo "没有变更需要提交"
           else
             git commit -m "自动同步: 更新到 cfnew ${{ steps.get_latest.outputs.version }}"
-            git push
+            git push origin "HEAD:${GITHUB_REF#refs/heads/}"
             echo "已提交并推送更新"
           fi
       
@@ -171,4 +173,3 @@ jobs:
           else
             echo "- 状态: ⏭️ 版本相同，无需更新" >> $GITHUB_STEP_SUMMARY
           fi
-
